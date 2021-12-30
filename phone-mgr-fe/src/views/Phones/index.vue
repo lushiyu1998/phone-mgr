@@ -38,6 +38,7 @@
 
                 <template #actions="record">
                     <a href="javascript:;" @click="update(record)">修改</a>
+                    &nbsp;
                     <a href="javascript:;" @click="remove(record)">删除</a>
                 </template>
             </a-table>
@@ -59,6 +60,7 @@
          <update 
             v-model:show="showUpdateModal"
             :phone="curEditPhone"
+            @update="updateCurPhone"
         />
     </div>
 </template>

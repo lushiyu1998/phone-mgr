@@ -29,3 +29,10 @@ export const updateCount = (data = {}) => {
         data,
     );
 };
+
+export const update = (data = {}) => {
+    return axios.post(
+        `http://localhost:3000/phone/update`,
+        data,
+    );
+};

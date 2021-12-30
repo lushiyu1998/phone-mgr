@@ -177,6 +177,10 @@ export default defineComponent ({
             curEditPhone.value = record;
         };
 
+        const updateCurPhone = (newData) => {
+            Object.assign(curEditPhone.value, newData);
+        };
+
         return {
             columns,
             show,
@@ -194,6 +198,7 @@ export default defineComponent ({
             showUpdateModal,
             update,
             curEditPhone,
+            updateCurPhone,
         };
     },
 });
