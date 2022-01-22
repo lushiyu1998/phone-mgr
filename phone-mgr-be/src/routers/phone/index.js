@@ -8,6 +8,15 @@ const PHONE_CONST = {
 };
 
 const Phone = mongoose.model('Phone');
+const InventoryLog = mongoose.model('InventoryLog');
+
+const findPhoneOne = async (id) => {
+    const one = await Phone.findOne({
+        _id: id,
+    }).exec();
+
+    return one;
+};
 
 const router = new Router({
     prefix: '/phone',
@@ -62,6 +71,9 @@ router.get('/list', async (ctx) => {
 
     const list = await Phone
         .find(query)
+        .sort({
+            _id: -1,
+        })
         .skip((page - 1) * size)
         .limit(size)
         .exec();
@@ -108,9 +120,7 @@ router.post('/update/count', async (ctx) => {
 
     num = Number(num);
 
-    const phone = await Phone.findOne({
-        _id: id,
-    }).exec();
+    const phone = await findPhoneOne(id);
 
     if (!phone) {
         ctx.body = {
@@ -142,6 +152,13 @@ router.post('/update/count', async (ctx) => {
 
     const res = await phone.save();
 
+    const log = new InventoryLog({
+        num: Math.abs(num),
+        type,
+    });
+
+    log.save();
+
     ctx.body = {
         data: res,
         code: 1,
@@ -155,9 +172,7 @@ router.post('/update', async (ctx) => {
         ...others
     } = ctx.request.body;
 
-    const one = await Phone.findOne({
-        _id: id,
-    }).exec();
+    const one = await findPhoneOne(id);
 
     //没有找到手机
     if (!one) {
@@ -184,6 +199,29 @@ router.post('/update', async (ctx) => {
         data: res,
         code: 1,
         msg : '保存成功',
+    };
+});
+
+router.get('/detail/:id', async (ctx) => {
+    const {
+        id
+    } = ctx.params;
+
+    const one = await findPhoneOne(id);
+
+    //没有找到手机
+    if (!one) {
+        ctx.body = {
+            msg: '没有找到手机',
+            code: 0,
+        }
+        return;
+    }
+
+    ctx.body = {
+        msg: '查询成功',
+        data: one,
+        code: 1,
     };
 });
 

@@ -1,10 +1,10 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { phone } from '@/service';
+import { useRouter } from 'vue-router';
 import { message, Modal, Input } from 'ant-design-vue';
 import { result, formatTimestamp } from '@/helpers/utils';
 import AddOne from './AddOne/index.vue';
 import Update from './Update/index.vue';
-
 
 export default defineComponent ({
     components: {
@@ -12,6 +12,8 @@ export default defineComponent ({
         Update,
     },
     setup() {
+        const router = useRouter();
+
         const columns = [
             {
                 title: '手机名',
@@ -113,14 +115,7 @@ export default defineComponent ({
                 .success(({ msg }) => {
                     message.success(msg);
 
-                    // const idx = list.value.findIndex((item) => {
-                    //     return item._id === _id;
-                    // }) ;
-
-                    // list.value.splice(idx, 1);
-
                     getList();
-
                 });
         };
 
@@ -172,13 +167,20 @@ export default defineComponent ({
             });
         };
 
+        //更新弹框
         const update = ({ record }) => {
             showUpdateModal.value = true;
             curEditPhone.value = record;
         };
 
+        //更新某台手机
         const updateCurPhone = (newData) => {
             Object.assign(curEditPhone.value, newData);
+        };
+
+        //进入详情页
+        const toDetail = ({ record }) => {
+            router.push(`/phones/${record._id}`);
         };
 
         return {
@@ -199,6 +201,7 @@ export default defineComponent ({
             update,
             curEditPhone,
             updateCurPhone,
+            toDetail,
         };
     },
 });

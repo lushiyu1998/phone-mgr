@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { getMate } = require('../helpers');
+const { getMeta, preSave } = require('../helpers');
 
 const PhoneSchema = new mongoose.Schema({
     //手机名
@@ -15,7 +15,9 @@ const PhoneSchema = new mongoose.Schema({
     //库存
     count: Number,
 
-    meta: getMate(),
+    meta: getMeta(),
 });
+
+PhoneSchema.pre('save', preSave );
 
 mongoose.model('Phone', PhoneSchema);

@@ -2,6 +2,7 @@ const Router = require('@koa/router');
 const mongoose = require('mongoose');
 const { getBody } = require('../../helpers/utils');
 const jwt = require('jsonwebtoken');
+const config = require('../../project.config');
 
 const User = mongoose.model('User');
 const InviteCode = mongoose.model('InviteCode');
@@ -107,7 +108,7 @@ router.post('/login', async (ctx) => {
         ctx.body = {
             code: 0,
             msg: '用户名或密码错误',
-            date: null,
+            data: null,
         };
         
         return;
@@ -115,16 +116,17 @@ router.post('/login', async (ctx) => {
 
     const user = {
         account: one.account,
+        character: one.character,
         _id: one._id,
     };
 
     if (one.password === password) {
         ctx.body = {
             code: 1,
-            msg: '登录成功',
-            date: {
+            msg: '登入成功',
+            data: {
                 user,
-                token: jwt.sign(user, 'phone-mgr'),
+                token: jwt.sign(user, config.JWT_SECRET),
             },
         };
         
@@ -134,7 +136,7 @@ router.post('/login', async (ctx) => {
     ctx.body = {
         code: 0,
         msg: '用户名或密码错误',
-        date: null,
+        data: null,
     };
 });
 

@@ -3,7 +3,7 @@
         <div class="bg"></div>
         <div class="title-info">
             <img class="item" src="./logo.png" alt="" >
-            <h2 class="item" >手机库存管理系统 后台</h2>
+            <h2 class="item" >手机库存管理系统</h2>
         </div>
 
         <div class="form">
@@ -103,6 +103,6 @@
 
 <script src="./index.js"></script>
 
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
     @import './index.scss';
 </style>
