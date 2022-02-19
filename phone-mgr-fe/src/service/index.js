@@ -3,3 +3,7 @@ export * as phone from './phone';
 export * as inventoryLog from './inventory-log';
 export * as user from './user';
 export * as character from './character';
+export * as log from './log';
+export * as resetPassword from './reset-password';
+export * as inviteCode from './invite-code';
+export * as phoneClassify from './phone-classify';

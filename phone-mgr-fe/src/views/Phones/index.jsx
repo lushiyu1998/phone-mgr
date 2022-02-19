@@ -1,10 +1,12 @@
 import { defineComponent, ref, onMounted } from 'vue';
-import { phone } from '@/service';
+import { phone, phoneClassify } from '@/service';
 import { useRouter } from 'vue-router';
 import { message, Modal, Input } from 'ant-design-vue';
 import { result, formatTimestamp } from '@/helpers/utils';
+import { getClassifyTitleById } from '@/helpers/phone-classify';
 import AddOne from './AddOne/index.vue';
 import Update from './Update/index.vue';
+// import { resultProps } from 'ant-design-vue/lib/result';
 
 export default defineComponent ({
     components: {
@@ -42,7 +44,9 @@ export default defineComponent ({
             },
             {
                 title: '分类',
-                dataIndex: 'classify',
+                slots: {
+                    customRender: 'classify',
+                },
             },
             {
                 title: '操作',
@@ -158,6 +162,7 @@ export default defineComponent ({
                             });
 
                             if (one) {
+                                console.log(num);
                                 one.count = one.count + num;
 
                                 message.success(`成功${word} ${Math.abs(num)}台手机，要赚大钱啦`)
@@ -202,6 +207,8 @@ export default defineComponent ({
             curEditPhone,
             updateCurPhone,
             toDetail,
+            getList,
+            getClassifyTitleById,
         };
     },
 });

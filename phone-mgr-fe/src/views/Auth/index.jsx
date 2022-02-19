@@ -1,9 +1,9 @@
 import { defineComponent, reactive, ref } from 'vue';
 import { MehOutlined,RobotOutlined,RocketOutlined  } from '@ant-design/icons-vue';
-import { auth } from '@/service';
+import { auth, resetPassword } from '@/service';
 import { result } from '@/helpers/utils';
 import { getCharacterInfoById } from '@/helpers/character';
-import { message } from 'ant-design-vue';
+import { message, Modal, Input } from 'ant-design-vue';
 import store from '@/store';
 import { useRouter } from 'vue-router';
 import { setToken } from '@/helpers/token';
@@ -23,6 +23,28 @@ export default defineComponent({
             password: '',
             inviteCode: '',
         });
+
+        const forgetPassword = () => {
+            Modal.confirm({
+              title: `输入要申请的账号`,
+              content: (
+                <div>
+                  <Input class="__forget_password_account" />
+                </div>
+              ),
+              onOk: async () => {
+                const el = document.querySelector('.__forget_password_account');
+                let account = el.value;
+      
+                const res = await resetPassword.add(account);
+      
+                result(res)
+                  .success(({ msg }) => {
+                    message.success(msg);
+                  });
+              },
+            });
+          };
 
         //注册逻辑
         const register = async () => {
@@ -94,6 +116,8 @@ export default defineComponent({
             //登录相关的数据
             login,
             loginForm,
+
+            forgetPassword,
         };
     },
 });

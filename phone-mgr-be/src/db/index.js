@@ -3,6 +3,10 @@ require('./Schemas/InviteCode');
 require('./Schemas/Phone');
 require('./Schemas/InventoryLog');
 require('./Schemas/Character');
+require('./Schemas/Log');
+require('./Schemas/LogResponse');
+require('./Schemas/ForgetPassword');
+require('./Schemas/PhoneClassify');
 
 const mongoose = require('mongoose');
 
