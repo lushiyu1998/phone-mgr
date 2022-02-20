@@ -1,36 +1,42 @@
 <template>
     <div>
-        <a-card>
-            <h2>手机列表</h2>
+        <a-card
+            :title="simple ? '最近新添的手机' : ''"
+        >
+            <div v-if="!simple">
+                <h2>手机列表</h2>
 
-            <a-divider />
+                <a-divider />
 
-            <space-between>
-                <div class="search">
-                    <a-input-search placeholder="根据手机名搜索"
-                    enter-button
-                    v-model:value="keyword"
-                    @search="onSearch"
-                />
+                <space-between>
+                    <div class="search">
+                        <a-input-search
+                        placeholder="根据手机名搜索"
+                        enter-button
+                        v-model:value="keyword"
+                        @search="onSearch"
+                    />
 
-                    <a v-if="isSearch" href="javascript:;" @click="backAll">返回</a>
-                </div>
+                        <a v-if="isSearch" href="javascript:;" @click="backAll">返回</a>
+                    </div>
 
-                <a-button
-                @click="show = true"
-                v-only-admin
-                >
-                 添加一条
-                </a-button>
-            </space-between>
+                    <a-button
+                    @click="show = true"
+                    v-only-admin
+                    >
+                    添加一条
+                    </a-button>
+                </space-between>
 
-            <a-divider />
+                <a-divider />
+            </div>
 
             <a-table
                 :columns="columns"
                 :data-source="list"
                 :pagination="false"
                 bordered
+                :scroll="{ x: 'max-content' }"
             >
                 <template #publishDate="data">
                     {{ formatTimestamp(data.record.publishDate) }}
@@ -46,7 +52,7 @@
                     <a href="javascript:;" @click="updateCount('OUT_COUNT', data.record)">出库</a>
                 </template>
 
-                <template #actions="record">
+                <template #actions="record" v-if="!simple">
                     <a href="javascript:;" @click="toDetail(record)">详情</a>
                     &nbsp;
                     <a v-only-admin href="javascript:;" @click="update(record)">修改</a>
@@ -54,15 +60,14 @@
                     <a v-only-admin href="javascript:;" @click="remove(record)">删除</a>
                 </template>
             </a-table>
-            <space-between style="margin-top: 24px">
-                <div />
+            <flex-emd v-if="!simple" style="margin-top: 24px">
                 <a-pagination 
                 v-model:current="curPage"
                 :total="total"
                 :page-size="10"
                 @change="setPage"
                 />
-            </space-between>
+            </flex-emd>
         </a-card>
 
         <add-one 

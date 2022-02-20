@@ -6,14 +6,16 @@ import { result, formatTimestamp } from '@/helpers/utils';
 import { getClassifyTitleById } from '@/helpers/phone-classify';
 import AddOne from './AddOne/index.vue';
 import Update from './Update/index.vue';
-// import { resultProps } from 'ant-design-vue/lib/result';
 
 export default defineComponent ({
     components: {
         AddOne,
         Update,
     },
-    setup() {
+    props: {
+        simple: Boolean,
+    },
+    setup(props) {
         const router = useRouter();
 
         const columns = [
@@ -48,13 +50,16 @@ export default defineComponent ({
                     customRender: 'classify',
                 },
             },
-            {
+        ];
+
+        if (!props.simple) {
+            columns.push({
                 title: '操作',
                 slots: {
                     customRender: 'actions',
                 },
-            },
-        ];
+            });
+        }
 
         const show = ref(false);
         const showUpdateModal = ref(false);
@@ -209,6 +214,7 @@ export default defineComponent ({
             toDetail,
             getList,
             getClassifyTitleById,
+            simple: props.simple,
         };
     },
 });

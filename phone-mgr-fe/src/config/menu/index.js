@@ -1,5 +1,10 @@
 export default [
     {
+        title: '总览',
+        url: '/dashboard',
+        onlyAdmin: true,
+    },
+    {
         title: '手机管理',
         url: '/phones',
         onlyAdmin: false,
@@ -34,5 +39,10 @@ export default [
                 onlyAdmin: true,
             },
         ],
+    },
+    {
+        title: '个人设置',
+        url: '/profile',
+        onlyAdmin: false,
     },
 ];
