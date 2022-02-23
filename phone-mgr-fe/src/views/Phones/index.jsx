@@ -3,6 +3,7 @@ import { phone, phoneClassify } from '@/service';
 import { useRouter } from 'vue-router';
 import { message, Modal, Input } from 'ant-design-vue';
 import { result, formatTimestamp } from '@/helpers/utils';
+import { getHeaders } from '@/helpers/request';
 import { getClassifyTitleById } from '@/helpers/phone-classify';
 import AddOne from './AddOne/index.vue';
 import Update from './Update/index.vue';
@@ -193,6 +194,22 @@ export default defineComponent ({
             router.push(`/phones/${record._id}`);
         };
 
+        const onUploadChange = ({ file }) => {
+            if (file.response) {
+              result(file.response)
+                .success(async (key) => {
+                  const res = await phone.addMany(key);
+      
+                  result(res)
+                    .success(({ data: { addCount } }) => {
+                      message.success(`成功添加 ${addCount} 部手机`);
+      
+                      getList();
+                    });
+                });
+            }
+          };
+
         return {
             columns,
             show,
@@ -215,6 +232,8 @@ export default defineComponent ({
             getList,
             getClassifyTitleById,
             simple: props.simple,
+            onUploadChange,
+            headers: getHeaders(),
         };
     },
 });

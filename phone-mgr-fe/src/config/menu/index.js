@@ -21,7 +21,7 @@ export default [
     },
     {
         title: '杂项',
-        onlyAdmin: false,
+        onlyAdmin: true,
         children: [
             {
                 title: '手机分类管理',

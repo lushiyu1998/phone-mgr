@@ -1,6 +1,8 @@
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
+const config = require('../../project.config');
 const { getBody } = require('../../helpers/utils');
+const { loadExcel, getFirstSheet } = require('../../helpers/excel');
 
 const PHONE_CONST = {
     IN: 'IN_COUNT',
@@ -9,6 +11,7 @@ const PHONE_CONST = {
 
 const Phone = mongoose.model('Phone');
 const InventoryLog = mongoose.model('InventoryLog');
+const PhoneClassify = mongoose.model('PhoneClassify');
 
 const findPhoneOne = async (id) => {
     const one = await Phone.findOne({
@@ -224,5 +227,60 @@ router.get('/detail/:id', async (ctx) => {
         code: 1,
     };
 });
+
+router.post('/addMany', async (ctx) => {
+    const {
+      key = '',
+    } = ctx.request.body;
+  
+    const path = `${config.UPLOAD_DIR}/${key}`;
+  
+    const excel = loadExcel(path);
+  
+    const sheet = getFirstSheet(excel);
+  
+    const arr = [];
+    for (let i = 0; i < sheet.length; i++) {
+      let record = sheet[i];
+  
+      const [
+        name,
+        price,
+        author,
+        publishDate,
+        classify,
+        count,
+      ] = record;
+
+      let classifyId = classify;
+  
+      const one = await PhoneClassify.findOne({
+        title: classify,
+      });
+
+      if (one) {
+        classifyId = one._id;
+      }
+
+      arr.push({
+        name,
+        price,
+        author,
+        publishDate,
+        classify: classifyId,
+        count,
+      });
+    }
+  
+    await Phone.insertMany(arr);
+  
+    ctx.body = {
+      code: 1,
+      msg: '添加成功',
+      data: {
+        addCount: arr.length,
+      },
+    };
+  });
 
 module.exports = router;

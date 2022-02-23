@@ -11,6 +11,7 @@
         >
         <a-sub-menu
             v-if="item.children"
+            :key="item.title"
         >
             <template #title>
                 <span><MailOutlined /><span>{{ item.title }}</span></span>

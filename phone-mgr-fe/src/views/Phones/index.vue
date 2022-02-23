@@ -20,12 +20,25 @@
                         <a v-if="isSearch" href="javascript:;" @click="backAll">返回</a>
                     </div>
 
-                    <a-button
-                    @click="show = true"
-                    v-only-admin
-                    >
-                    添加一条
-                    </a-button>
+                    <div>
+                        <a-button
+                        @click="show = true"
+                        v-only-admin
+                        >
+                        添加一条
+                        </a-button>
+                        &nbsp;
+                        <a-upload
+                        @change="onUploadChange"
+                        action="http://localhost:3000/upload/file"
+                        :headers="headers"
+                        >
+
+                        <a-button type="primary">上传 Excel 添加</a-button>
+                        </a-upload>
+                    </div>
+
+                    
                 </space-between>
 
                 <a-divider />
@@ -60,14 +73,14 @@
                     <a v-only-admin href="javascript:;" @click="remove(record)">删除</a>
                 </template>
             </a-table>
-            <flex-emd v-if="!simple" style="margin-top: 24px">
+            <flex-end v-if="!simple" style="margin-top: 24px">
                 <a-pagination 
                 v-model:current="curPage"
                 :total="total"
                 :page-size="10"
                 @change="setPage"
                 />
-            </flex-emd>
+            </flex-end>
         </a-card>
 
         <add-one 

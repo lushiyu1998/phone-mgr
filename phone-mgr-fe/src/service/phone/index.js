@@ -1,47 +1,50 @@
-import axios from 'axios';
-import { getToken } from '@/helpers/token';
-
-axios.defaults.headers['Authorization'] = `Bearer ${getToken()}`;
+import {
+    del, post, get
+  } from '@/helpers/request';
 
 export const add = (form) => {
-    return axios.post(
-        'http://localhost:3000/phone/add',
+    return post(
+        '/phone/add',
          form,
     );
 };
 
 export const list = (data) => {
-    return axios.get(
-        'http://localhost:3000/phone/list',
-        {
-            params: data,
-        },
+    return get(
+        '/phone/list',
+        data
     );
 };
 
 export const remove = (id) => {
-    return axios.delete(
+    return del(
         //此处为模板字符串
-        `http://localhost:3000/phone/${id}`,
+        `/phone/${id}`,
     );
 };
 
 export const updateCount = (data = {}) => {
-    return axios.post(
-        `http://localhost:3000/phone/update/count`,
+    return post(
+        `/phone/update/count`,
         data,
     );
 };
 
 export const update = (data = {}) => {
-    return axios.post(
-        `http://localhost:3000/phone/update`,
+    return post(
+        `/phone/update`,
         data,
     );
 };
 
 export const detail = (id) => {
-    return axios.get(
-        `http://localhost:3000/phone/detail/${id}`,
+    return get(
+        `/phone/detail/${id}`,
     );
+};
+
+export const addMany = (key) => {
+    return post('/phone/addMany',{
+        key,
+    });
 };
