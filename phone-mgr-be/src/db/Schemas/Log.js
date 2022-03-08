@@ -2,23 +2,23 @@ const mongoose = require('mongoose');
 const { getMeta, preSave } = require('../helpers');
 
 const LogSchema = new mongoose.Schema({
-    user: {
-        account: String,
-        id: String,
-    },
+  user: {
+    account: String,
+    id: String,
+  },
 
-    request: {
-        method: String,
-        url: String,
-        status: Number,
-    },
+  request: {
+    method: String,
+    url: String,
+    status: Number,
+  },
 
-    starTime: Number,
-    endTime: Number,
+  startTime: Number,
+  endTime: Number,
 
-    show: Boolean,
+  show: Boolean,
 
-    meta: getMeta(),
+  meta: getMeta(),
 });
 
 LogSchema.pre('save', preSave);

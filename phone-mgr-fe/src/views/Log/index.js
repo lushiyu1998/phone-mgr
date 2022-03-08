@@ -13,10 +13,10 @@ export default defineComponent({
         const total = ref(0);
         const list = ref([]);
         const loading = ref(true);
-
+        
         const columns = [
             {
-                title: '用户名',
+                title: '账户',
                 dataIndex: 'user.account',
             },
             {
@@ -47,6 +47,7 @@ export default defineComponent({
 
             result(res)
                 .success(({ data: { list: l, total: t } }) => {
+                    console.log(l);
                     l.forEach((item) => {
                         item.action = getLogInfoByPath(item.request.url);
                     });
@@ -74,7 +75,7 @@ export default defineComponent({
                     getList();
                 });
         };
-
+        
         return {
             curPage,
             total,

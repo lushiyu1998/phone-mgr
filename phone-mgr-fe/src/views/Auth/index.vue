@@ -3,7 +3,7 @@
         <div class="bg"></div>
         <div class="title-info">
             <img class="item" src="./logo.png" alt="" >
-            <h2 class="item" >手机库存管理系统</h2>
+            <h1 class="item" >手机库存管理系统</h1>
         </div>
 
         <div class="form">

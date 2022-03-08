@@ -31,12 +31,6 @@ const columns = [
       customRender: 'actions',
     },
   },
-  // {
-  //   title: '库存',
-  //   slots: {
-  //     customRender: 'count',
-  //   },
-  // },
 ];
 
 export default defineComponent({

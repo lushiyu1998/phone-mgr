@@ -2,114 +2,116 @@ import { defineComponent, isVNode, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { result, formatTimestamp } from '@/helpers/utils';
 import { phone, inventoryLog } from '@/service';
+import { getClassifyTitleById } from '@/helpers/phone-classify';
 import { CheckOutlined } from '@ant-design/icons-vue';
-import { message} from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 import Update from '@/views/Phones/Update/index.vue';
 
 const columns = [
-    {
-        title: '操作数量',
-        dataIndex: 'num',
+  {
+    title: '数量',
+    dataIndex: 'num',
+  },
+  {
+    title: '操作时间',
+    slots: {
+      customRender: 'createdAt',
     },
-    {
-        title: '操作时间',
-            slots: {
-                customRender: 'createdAt',
-            },
-    },
+  }
 ];
 
 export default defineComponent({
-    component: {
-        Update,
-        CheckOutlined,
-    },
-    setup() {
-        const route = useRoute();
-        const router = useRouter();
-                                        
-        const { id } = route.params;
-        const detailInfo = ref({});
-        const log = ref([]);
-        const showUpdateModal = ref(false);
-        const logTotal = ref(0);
-        const logCurPage = ref(1);
-        const curLogType = ref('IN_COUNT');
+  components: {
+    Update,
+    CheckOutlined,
+  },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
 
-        //获取手机详细信息
-        const getDetail = async () => {
-            const res = await phone.detail(id);
+    const { id } = route.params;
+    const detailInfo = ref({});
+    const log = ref([]);
+    const showUpdateModal = ref(false);
+    const logTotal = ref(0);
+    const logCurPage = ref(1);
+    const curLogType = ref('IN_COUNT');
 
-            result(res)
-                .success(({ data }) => {
-                    detailInfo.value = data;
-                });
-        };
+    // 获取商品详细信息
+    const getDetail = async () => {
+      const res = await phone.detail(id);
 
-        //获取日志
-        const getInventoryLog = async () => {
-            const res = await inventoryLog.list(
-                curLogType.value,
-                logCurPage.value,
-                10,
-            );
-
-            result(res)
-                .success(({ data: { list, total } }) => {
-                    log.value = list;
-                    logTotal.value = total;
-                });
-        };
-
-        onMounted(() => {
-            getDetail();
-            getInventoryLog();
+      result(res)
+        .success(({ data }) => {
+          detailInfo.value = data;
         });
+    };
 
-        //删除操作
-        const remove = async () => {
-            const res = await phone.remove(id);
+    // 获取出入库日志
+    const getInventoryLog = async () => {
+      const res = await inventoryLog.list(
+        curLogType.value,
+        logCurPage.value,
+        10,
+      );
 
-            result(res)
-                .success(({ msg }) => {
-                    message.success(msg);
+      result(res)
+        .success(({ data: { list, total } }) => {
+          log.value = list;
+          logTotal.value = total;
+        });
+    };
 
-                    router.replace('/phones');
-                });
-        };
+    onMounted(() => {
+      getDetail();
+      getInventoryLog();
+    });
 
-        //修改操作
-        const update = (phone) => {
-            Object.assign(detailInfo.value, phone);
-        };
+    // 删除操作
+    const remove = async () => {
+      const res = await phone.remove(id);
 
-        //日志分页切换时
-        const setLogPage = (page) => {
-            logCurPage.value = page;
+      result(res)
+        .success(({ msg }) => {
+          message.success(msg);
 
-            getInventoryLog();
-        };
+          router.replace('/phones');
+        });
+    };
 
-        //筛选日志
-        const logFilter = (type) => {
-            curLogType.value = type;
+    // 更新操作
+    const update = (phone) => {
+      Object.assign(detailInfo.value, phone);
+    };
 
-            getInventoryLog();
-        };
+    // 日志分页切换的时候
+    const setLogPage = (page) => {
+      logCurPage.value = page;
 
-        return {
-            d: detailInfo,
-            formatTimestamp,
-            remove,
-            showUpdateModal,
-            update,
-            log,
-            logTotal,
-            setLogPage,
-            columns,
-            logFilter,
-            curLogType,
-            logCurPage,
-        };
-    },
+      getInventoryLog();
+    };
+
+    // 筛选日志
+    const logFilter = (type) => {
+      curLogType.value = type;
+
+      getInventoryLog();
+    };
+
+    return {
+      d: detailInfo,
+      formatTimestamp,
+      remove,
+      showUpdateModal,
+      update,
+      log,
+      logTotal,
+      setLogPage,
+      columns,
+      logFilter,
+      curLogType,
+      logCurPage,
+      getClassifyTitleById,
+    };
+  },
 });

@@ -17,8 +17,7 @@ const LOG_MAP = [
     ['/forget-password/update/status', '更新密码状态'],
     ['/forget-password/add', '申请忘记密码'],
     ['/forget-password/list', '获取重置密码列表'],
-    
-    // ['?page=1&size=20', '哈哈'],
+    ['/dashboard/base-info', '获取总览页面'],
   ];
   
   export const getLogInfoByPath = (path) => {
