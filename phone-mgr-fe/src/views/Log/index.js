@@ -15,10 +15,10 @@ export default defineComponent({
         const loading = ref(true);
         
         const columns = [
-            {
-                title: '账户',
-                dataIndex: 'user.account',
-            },
+            // {
+            //     title: '用户',
+            //     dataIndex: 'user.account',
+            // },
             {
                 title: '动作',
                 dataIndex: 'action',

@@ -49,7 +49,7 @@ router.post('/delete', async (ctx) => {
     } = ctx.request.body;
 
     const one = await Log.findOne({
-        _id:id,
+        _id: id,
     }).exec();
 
     if (!one) {
